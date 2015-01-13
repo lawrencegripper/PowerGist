@@ -1,13 +1,43 @@
-﻿<UserControl x:Class="GripDev.PowerGist.Addin.UserControl1"
+﻿<UserControl x:Name="userControl" x:Class="GripDev.PowerGist.Addin.UserControl1"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GripDev.PowerGist.Addin"
+        
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.DataContext>
+        <local:MainViewModel />
+    </UserControl.DataContext>
     <Grid>
-        <ListBox Name="listBox"/>
+        <StackPanel>
+            
+        </StackPanel>
+        <ListBox Name="listBox" ItemsSource="{Binding MyGists}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Content="OpenAll" Command="{Binding DataContext.LoadScript, ElementName=userControl}" CommandParameter="{Binding Mode=OneWay}" />
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="{Binding description}"/>
+                            <ListBox ItemsSource="{Binding files}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding filename}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                    </StackPanel>
+
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
         <WebBrowser Name="webBrowser" Navigating="webBrowser_Navigating" LoadCompleted="webBrowser_LoadCompleted"/>
     </Grid>
 </UserControl>

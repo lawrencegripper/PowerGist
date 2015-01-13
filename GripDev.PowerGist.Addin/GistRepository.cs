@@ -20,12 +20,20 @@ namespace GripDev.PowerGist.Addin
             this.client = client;
         }
 
-        public async Task<IEnumerable<GistObject>> GetMyGists()
+        public async Task<GistObject> Create(string description, string filename, string content)
+        {
+            return await client.CreateAGist(description, false, new List<Tuple<string, string>>()
+            {
+                new Tuple<string, string>(filename, content)
+            });
+        }
+
+        public async Task<IEnumerable<GistObject>> GetUsers()
         {
             return await client.ListGists(GistClient.ListMode.AuthenticatedUserGist);
         }
 
-        public async Task<IEnumerable<GistObject>> GetStarredGists()
+        public async Task<IEnumerable<GistObject>> GetStarred()
         {
             return await client.ListGists(GistClient.ListMode.AuthenticatedUserStarredGist);
         }
@@ -35,12 +43,17 @@ namespace GripDev.PowerGist.Addin
             return await client.GetSingleGist(id);
         }
 
-        public async void SaveGist(GistObject obj, string filename, string content)
+        public async Task<string> GetFileContentByUri(string rawUri)
+        {
+            return await client.DownloadRawText(new Uri(rawUri));
+        }
+
+        public async Task Update(GistObject obj, string filename, string content)
         {
             await client.EditAGist(obj.id, obj.description, filename, content);
         }
 
-        public async void DeleteGist(string id)
+        public async void Delete(string id)
         {
             await client.DeleteAGist(id);
         }

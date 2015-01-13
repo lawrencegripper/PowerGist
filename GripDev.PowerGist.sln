@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.22310.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GripDev.PowerGist.UITest", "GripDev.PowerGist\GripDev.PowerGist.UITest.csproj", "{BFC075C1-49E8-4F96-84A0-EE43D820DDFC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GripDev.PowerGist.Addin", "GripDev.PowerGist.Addin\GripDev.PowerGist.Addin.csproj", "{1862DEE2-ECEC-431C-8163-617103207DA5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{27C00EEB-F44B-4860-89C0-E2DF7B6EAE28}"
@@ -18,10 +16,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BFC075C1-49E8-4F96-84A0-EE43D820DDFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BFC075C1-49E8-4F96-84A0-EE43D820DDFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BFC075C1-49E8-4F96-84A0-EE43D820DDFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BFC075C1-49E8-4F96-84A0-EE43D820DDFC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1862DEE2-ECEC-431C-8163-617103207DA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1862DEE2-ECEC-431C-8163-617103207DA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1862DEE2-ECEC-431C-8163-617103207DA5}.Release|Any CPU.ActiveCfg = Release|Any CPU

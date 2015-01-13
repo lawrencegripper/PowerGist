@@ -24,15 +24,25 @@ namespace GripDev.PowerGist.Addin
     public partial class UserControl1 : IAddOnToolHostObject
     {
         private GistClient gistClient;
+        private MainViewModel viewModel;
+        public ObjectModelRoot HostObject { get; set; }
 
         public UserControl1()
         {
             InitializeComponent();
 
             gistClient = new GistClient("1eb530bea98d9f863c57", "1e55daaec72d64581f8688e7bbb3e779c83b3262", "powershellISEAddin");
-
+            
             //navigate to "https://github.com/login/oauth/authorize" 
             webBrowser.Navigate(gistClient.AuthorizeUrl);
+        }
+
+        private void webBrowser_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            if (e.Uri.ToString().Contains("gripdev"))
+            {
+                webBrowser.Visibility = Visibility.Collapsed;
+            }
         }
 
         private async void webBrowser_LoadCompleted(object sender, NavigationEventArgs e)
@@ -46,36 +56,34 @@ namespace GripDev.PowerGist.Addin
 
                 //get access token
                 await gistClient.Authorize(authCode);
-
-                await GetUserGists();
+                ISEInterop.Config.ObjectModelRoot = HostObject;
+                var gistRepo = new GistRepository(gistClient);
+                viewModel = new MainViewModel(gistRepo);
+                this.DataContext = viewModel;
+                await viewModel.Load();
             }
         }
 
-        private async Task GetUserGists()
-        {
-            var gists = await gistClient.ListGists(GistClient.ListMode.AuthenticatedUserGist);
-            var files = gists.SelectMany(x => x.files.Where(y => y.filename.Contains(".ps1")));
 
 
-            foreach (var gFile in files)
-            {
-                var newFile = HostObject.CurrentPowerShellTab.Files.Add();
-                HostObject.CurrentPowerShellTab.Files.SelectedFile = newFile;
+        //private async Task GetUserGists()
+        //{
+        //    var gists = await gistClient.ListGists(GistClient.ListMode.AuthenticatedUserGist);
+        //    var files = gists.SelectMany(x => x.files.Where(y => y.filename.Contains(".ps1")));
 
-                var content = await gistClient.DownloadRawText(new Uri(gFile.raw_url));
 
-                newFile.Editor.InsertText(content);
-            }
-        }
+        //    foreach (var gFile in files)
+        //    {
+        //        var newFile = HostObject.CurrentPowerShellTab.Files.Add();
+        //        HostObject.CurrentPowerShellTab.Files.SelectedFile = newFile;
 
-        public ObjectModelRoot HostObject { get; set; }
+        //        var content = await gistClient.DownloadRawText(new Uri(gFile.raw_url));
 
-        private void webBrowser_Navigating(object sender, NavigatingCancelEventArgs e)
-        {
-            if (e.Uri.ToString().Contains("gripdev"))
-            {
-                webBrowser.Visibility = Visibility.Collapsed;
-            }
-        }
+        //        newFile.Editor.InsertText(content);
+        //    }
+        //}
+
+
+
     }
 }

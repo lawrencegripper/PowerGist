@@ -17,27 +17,60 @@ namespace GripDev.PowerGist.Addin
         public MainViewModel(GistRepository repo)
         {
             this.repo = repo;
+
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        //ctor for design time 
+        public MainViewModel()
+        {
+            myGists = new ObservableCollection<GistObject>()
+            {
+                new GistObject
+                {
+                    id = "something", description = "something here"
+                }
+            };
         }
 
         public async Task Load()
         {
-            myGists = new ObservableCollection<GistObject>(await repo.GetMyGists());
-            starredGists = new ObservableCollection<GistObject>(await repo.GetStarredGists());
+            var myGistsTemp = await repo.GetUsers();
+            MyGists = new ObservableCollection<GistObject>(myGistsTemp);
 
-            ExecuteScript = new DelegateCommand<string>(x =>
+            StarredGists = new ObservableCollection<GistObject>(await repo.GetStarred());
+
+            LoadScript = new DelegateCommand<GistObject>(async q =>
             {
-                
+                foreach(var file in q.files)
+                {
+                    var CreateNewFile = new ISEInterop.CreateNewFile();
+                    var content = await repo.GetFileContentByUri(file.raw_url);
+                    CreateNewFile.Invoke(file.filename, content); 
+                }
             });
         }
 
-        public ICommand ExecuteScript { get; set; }
+        private ICommand loadScript;
+
+        public ICommand LoadScript
+        {
+            get { return loadScript; }
+            set { loadScript = value; NotifyPropertyChanged(); }
+        }
 
         private ObservableCollection<GistObject> myGists;
 
         public ObservableCollection<GistObject> MyGists
         {
             get { return myGists; }
-            set { myGists = value; }
+            set { myGists = value; NotifyPropertyChanged();  }
         }
 
         private ObservableCollection<GistObject> starredGists;
@@ -45,13 +78,13 @@ namespace GripDev.PowerGist.Addin
         public ObservableCollection<GistObject> StarredGists
         {
             get { return starredGists; }
-            set { starredGists = value; }
+            set { starredGists = value; NotifyPropertyChanged(); }
         }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void FirePropertyChanged([CallerMemberName]string propertyName = null)
+        private void NotifyPropertyChanged([CallerMemberName]string propertyName = null)
         {
             var handler = PropertyChanged;
             if (handler != null)
