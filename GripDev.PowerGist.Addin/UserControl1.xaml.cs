@@ -54,10 +54,17 @@ namespace GripDev.PowerGist.Addin
         private async Task GetUserGists()
         {
             var gists = await gistClient.ListGists(GistClient.ListMode.AuthenticatedUserGist);
+            var files = gists.SelectMany(x => x.files.Where(y => y.filename.Contains(".ps1")));
 
-            foreach (var g in gists)
+
+            foreach (var gFile in files)
             {
-                listBox.Items.Add(g.files.Select(x => x.filename));
+                var newFile = HostObject.CurrentPowerShellTab.Files.Add();
+                HostObject.CurrentPowerShellTab.Files.SelectedFile = newFile;
+
+                var content = await gistClient.DownloadRawText(new Uri(gFile.raw_url));
+
+                newFile.Editor.InsertText(content);
             }
         }
 
