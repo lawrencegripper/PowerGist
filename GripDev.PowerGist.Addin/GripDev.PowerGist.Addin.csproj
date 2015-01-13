@@ -61,6 +61,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="GistRepository.cs" />
+    <Compile Include="IseIntrop\CreateNewFile.cs" />
+    <Compile Include="MainViewModel.cs" />
+    <Compile Include="netfx\System\Guard.cs" />
+    <Compile Include="netfx\System\Windows\Input\DelegateCommand.cs" />
     <Compile Include="UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
       <SubType>Code</SubType>
