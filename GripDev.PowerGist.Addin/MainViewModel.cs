@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace GripDev.PowerGist.Addin
@@ -30,21 +31,18 @@ namespace GripDev.PowerGist.Addin
         //ctor for design time 
         public MainViewModel()
         {
-            myGists = new ObservableCollection<GistObject>()
-            {
-                new GistObject
-                {
-                    id = "something", description = "something here"
-                }
-            };
+            Loading = Visibility.Visible;
         }
 
         public async Task Load()
         {
+            Loading = Visibility.Visible;
             var myGistsTemp = await repo.GetUsers();
             MyGists = new ObservableCollection<GistObject>(myGistsTemp);
 
             StarredGists = new ObservableCollection<GistObject>(await repo.GetStarred());
+
+            Loading = Visibility.Collapsed;
 
             LoadScript = new DelegateCommand<GistObject>(async q =>
             {
@@ -65,6 +63,28 @@ namespace GripDev.PowerGist.Addin
             set { loadScript = value; NotifyPropertyChanged(); }
         }
 
+        private GistObject currentGist;
+
+        public GistObject CurrentGist
+        {
+            get { return currentGist; }
+            set {
+                currentGist = value;
+                NotifyPropertyChanged();
+                //update possible files
+                CurrentGistFiles = new ObservableCollection<File>(currentGist.files);
+            }
+        }
+
+        private File currentFile;
+
+        public File CurrentFile
+        {
+            get { return currentFile; }
+            set { currentFile = value; NotifyPropertyChanged(); }
+        }
+
+
         private ObservableCollection<GistObject> myGists;
 
         public ObservableCollection<GistObject> MyGists
@@ -79,6 +99,28 @@ namespace GripDev.PowerGist.Addin
         {
             get { return starredGists; }
             set { starredGists = value; NotifyPropertyChanged(); }
+        }
+
+        private ObservableCollection<File> currentGistFiles;
+
+        public ObservableCollection<File> CurrentGistFiles
+        {
+            get { return currentGistFiles; }
+            set { currentGistFiles = value; NotifyPropertyChanged(); }
+        }
+
+
+        private Visibility loading;
+        public Visibility Loading
+        {
+            get
+            {
+                return loading;
+            }
+            set
+            {
+                value = loading; NotifyPropertyChanged();
+            }
         }
 
 

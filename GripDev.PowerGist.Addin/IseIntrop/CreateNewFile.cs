@@ -24,7 +24,7 @@ namespace GripDev.PowerGist.Addin.ISEInterop
             var newFile = host.CurrentPowerShellTab.Files.Add();
             host.CurrentPowerShellTab.Files.SelectedFile = newFile;
             newFile.Editor.InsertText(content);
-            var filePath = string.Format("{0}\{1}", Config.PowerGistFolder, name);
+            var filePath = string.Format("{0}\\{1}", Config.PowerGistFolder, name);
             newFile.SaveAs(filePath);
         }
     }

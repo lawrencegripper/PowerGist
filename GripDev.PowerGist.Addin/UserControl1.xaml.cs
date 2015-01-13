@@ -32,26 +32,19 @@ namespace GripDev.PowerGist.Addin
             InitializeComponent();
 
             gistClient = new GistClient("1eb530bea98d9f863c57", "1e55daaec72d64581f8688e7bbb3e779c83b3262", "powershellISEAddin");
-            
+
             //navigate to "https://github.com/login/oauth/authorize" 
+            webBrowser.Visibility = Visibility.Visible;
             webBrowser.Navigate(gistClient.AuthorizeUrl);
         }
 
-        private void webBrowser_Navigating(object sender, NavigatingCancelEventArgs e)
+        private async void webBrowser_Navigating(object sender, NavigatingCancelEventArgs e)
         {
-            if (e.Uri.ToString().Contains("gripdev"))
-            {
-                webBrowser.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private async void webBrowser_LoadCompleted(object sender, NavigationEventArgs e)
-        {
-            if (e.Uri == null)
-            { return; }
-
             if (e.Uri.AbsoluteUri.Contains("code="))
             {
+                e.Cancel = true;
+                webBrowser.Visibility = Visibility.Collapsed;
+
                 var authCode = Regex.Split(e.Uri.AbsoluteUri, "code=")[1];
 
                 //get access token
@@ -62,6 +55,14 @@ namespace GripDev.PowerGist.Addin
                 this.DataContext = viewModel;
                 await viewModel.Load();
             }
+        }
+
+        private async void webBrowser_LoadCompleted(object sender, NavigationEventArgs e)
+        {
+            if (e.Uri == null)
+            { return; }
+
+            
         }
 
 

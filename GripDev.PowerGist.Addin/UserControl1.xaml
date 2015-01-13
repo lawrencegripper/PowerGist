@@ -4,40 +4,61 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GripDev.PowerGist.Addin"
-        
+             Background="#FFF2F2F2"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="400">
     <UserControl.DataContext>
         <local:MainViewModel />
     </UserControl.DataContext>
-    <Grid>
+    <Grid x:Name="grid" Width="400">
         <StackPanel>
+            <ProgressBar IsIndeterminate="True" Height="10" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Visibility="{Binding Loading}"/>
+            <TextBlock Text="Update Gist File"/>
+            <ComboBox ItemsSource="{Binding MyGists}" SelectedItem="{Binding CurrentGist}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding description}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <ComboBox ItemsSource="{Binding CurrentGistFiles}" SelectedItem="{Binding CurrentFile}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding filename}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Button Content="Update Gist from current Tab"/>
             
-        </StackPanel>
-        <ListBox Name="listBox" ItemsSource="{Binding MyGists}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Content="OpenAll" Command="{Binding DataContext.LoadScript, ElementName=userControl}" CommandParameter="{Binding Mode=OneWay}" />
-                        </StackPanel>
-                        <StackPanel>
-                            <TextBlock Text="{Binding description}"/>
-                            <ListBox ItemsSource="{Binding files}">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel>
-                                            <TextBlock Text="{Binding filename}"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </StackPanel>
-                    </StackPanel>
+            <TextBlock Text="Open Gists"/>
+            <ListBox Name="listBox" ItemsSource="{Binding MyGists}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Background="#FFF2F2F2">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button Content="Open" Command="{Binding DataContext.LoadScript, ElementName=grid}" CommandParameter="{Binding Mode=OneWay}" BorderBrush="{x:Null}" Foreground="Black" Background="{x:Null}">
 
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <WebBrowser Name="webBrowser" Navigating="webBrowser_Navigating" LoadCompleted="webBrowser_LoadCompleted"/>
+                                </Button>
+                            </StackPanel>
+                            <StackPanel Margin="10,0,0,0">
+                                <TextBlock Text="{Binding description}" FontSize="18.667" FontFamily="Segoe UI Light" TextTrimming="CharacterEllipsis"/>
+                                <ListBox ItemsSource="{Binding files}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding filename}" FontFamily="Segoe UI Light"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </StackPanel>
+
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+
+        <WebBrowser Visibility="Collapsed" Name="webBrowser" Navigating="webBrowser_Navigating" LoadCompleted="webBrowser_LoadCompleted"/>
     </Grid>
 </UserControl>
