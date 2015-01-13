@@ -7,6 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <WebBrowser Source="http://gripdev.wordpress.com"></WebBrowser> 
+        <ListBox Name="listBox"/>
+        <WebBrowser Name="webBrowser" LoadCompleted="webBrowser_LoadCompleted"/>
     </Grid>
 </UserControl>
