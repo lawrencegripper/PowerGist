@@ -8,6 +8,6 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <ListBox Name="listBox"/>
-        <WebBrowser Name="webBrowser" LoadCompleted="webBrowser_LoadCompleted"/>
+        <WebBrowser Name="webBrowser" Navigating="webBrowser_Navigating" LoadCompleted="webBrowser_LoadCompleted"/>
     </Grid>
 </UserControl>

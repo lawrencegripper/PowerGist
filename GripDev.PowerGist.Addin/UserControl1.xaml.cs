@@ -47,19 +47,28 @@ namespace GripDev.PowerGist.Addin
                 //get access token
                 await gistClient.Authorize(authCode);
 
-                webBrowser.Visibility = Visibility.Collapsed;
-
-                var gists = await gistClient.ListGists(GistClient.ListMode.AuthenticatedUserGist);
-
-                foreach (var g in gists)
-                {
-                    listBox.Items.Add(g.files.Select(x => x.filename));
-                }
+                await GetUserGists();
             }
+        }
 
+        private async Task GetUserGists()
+        {
+            var gists = await gistClient.ListGists(GistClient.ListMode.AuthenticatedUserGist);
 
+            foreach (var g in gists)
+            {
+                listBox.Items.Add(g.files.Select(x => x.filename));
+            }
         }
 
         public ObjectModelRoot HostObject { get; set; }
+
+        private void webBrowser_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            if (e.Uri.ToString().Contains("gripdev"))
+            {
+                webBrowser.Visibility = Visibility.Collapsed;
+            }
+        }
     }
 }
