@@ -16,20 +16,13 @@ namespace GripDev.PowerGist.Addin
     public class MainViewModel : INotifyPropertyChanged
     {
         private GistRepository repo;
-        public MainViewModel(GistRepository repo)
+        public MainViewModel(GistRepository repo) : this()
         {
             this.repo = repo;
             AddFileName = "newFile.ps1";
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            //AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         }
-
-        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        //ctor for design time 
+ 
         public MainViewModel()
         {
             Loading = Visibility.Visible;
