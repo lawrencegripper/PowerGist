@@ -1,6 +1,14 @@
+$packageName = 'PowerGist.Install'
+
 $path = Split-Path -Parent $MyInvocation.MyCommand.Definition
-$addinDll = "$path\GripDev.PowerGist.Addin.dll"
-$depDll = "$path\GistsApi.dll"
+
+
+$pathLib = "$path\..\lib\"
+
+Write-host $pathLib
+
+$addinDll = "$pathLib\GripDev.PowerGist.Addin.dll"
+$depDll = "$pathLib\GistsApi.dll"
 $iseProfile = "$pshome\Microsoft.PowerShellISE_profile.ps1"
 
 Copy-Item $addinDll $pshome -Force 
@@ -13,3 +21,5 @@ $line3 = "`$psISE.CurrentPowerShellTab.VerticalAddOnTools.Add('PowerGist', [Grip
 Add-Content $iseProfile $line1 -Force
 Add-Content $iseProfile $line2 -Force
 Add-Content $iseProfile $line3 -Force
+
+Write-ChocolateySuccess $packageName

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>PowerGist.Install</id>
+        <version>1.0.0</version>
+        <authors>Lawrence Gripper</authors>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>My package description.</description>
+    </metadata>
+    <files>
+        <file src="GripDev.PowerGist.Addin\bin\Release\GistsApi.dll" target="lib\GistsApi.dll" />
+        <file src="GripDev.PowerGist.Addin\bin\Release\GripDev.PowerGist.Addin.dll" target="lib\GripDev.PowerGist.Addin.dll" />
+        <file src="chocolateyInstall.ps1" target="tools\chocolateyInstall.ps1" />
+    </files>
+</package>
