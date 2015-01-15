@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace GripDev.PowerGist.Addin.ISEIntrop
 {
-    private ObjectModelRoot host;
-    class GetCurrentFileContent
-    {
-        host = Config.ObjectModelRoot;
-    }
+    //private ObjectModelRoot host;
+    //class GetCurrentFileContent
+    //{
+    //    host = Config.ObjectModelRoot;
+    //}
 
-    public File Invoke()
-    {
+    //public File Invoke()
+    //{
 
-    }
+    //}
 }

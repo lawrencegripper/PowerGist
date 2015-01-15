@@ -27,14 +27,44 @@ namespace GripDev.PowerGist.Addin.ISEInterop
             newFile.Editor.InsertText(content);
             var filePath = string.Format("{0}\\{1}", Config.PowerGistFolder, name);
 
-            if (System.IO.File.Exists(filePath))
+            if (FileNoStoredLocally(filePath))
             {
-                var result = MessageBox.Show("File already exists, do you want to overwrite? (if not I'll leave it unsaved) Path: " + filePath, "Overwrite?", MessageBoxButton.YesNo);
-                if (result == MessageBoxResult.Yes)
-                {
-                    newFile.SaveAs(filePath);
-                }
+                SaveFileLocally(newFile, filePath);
+                return;
             }
+
+            if (NoLocalchanges(content, filePath))
+            {
+                SaveFileLocally(newFile, filePath);
+                return;
+            }
+
+            if (OverwriteLocalChanges(filePath))
+            {
+                SaveFileLocally(newFile, filePath);
+                return;
+            }
+
+        }
+
+        private static bool FileNoStoredLocally(string filePath)
+        {
+            return !System.IO.File.Exists(filePath);
+        }
+
+        private static bool NoLocalchanges(string content, string filePath)
+        {
+            return System.IO.File.ReadAllText(filePath) == content;
+        }
+
+        private static bool OverwriteLocalChanges(string filePath)
+        {
+            return MessageBox.Show("File already exists with changes locally, do you want to overwrite? (if not I'll leave it unsaved) Path: " + filePath, "Overwrite?", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+        }
+
+        private static void SaveFileLocally(ISEFile newFile, string filePath)
+        {
+            newFile.SaveAs(filePath);
         }
     }
 }
