@@ -31,7 +31,7 @@ namespace GripDev.PowerGist.Addin
         {
             InitializeComponent();
 
-            gistClient = new GistClient("1eb530bea98d9f863c57", "1e55daaec72d64581f8688e7bbb3e779c83b3262", "powershellISEAddin");
+            gistClient = new GistClient("*ClientKeyHere*", "*ClientSecretHere*", "powershellISEAddin");
             viewModel = new MainViewModel();
             viewModel.Loading = Visibility.Collapsed;
 
