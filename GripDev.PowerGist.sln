@@ -7,7 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GripDev.PowerGist.Addin", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{27C00EEB-F44B-4860-89C0-E2DF7B6EAE28}"
 	ProjectSection(SolutionItems) = preProject
-		PowerGistInstaller.ps1 = PowerGistInstaller.ps1
+		PowerGistInstall.ps1 = PowerGistInstall.ps1
+		PowerGistInstallerDebug.ps1 = PowerGistInstallerDebug.ps1
 	EndProjectSection
 EndProject
 Global

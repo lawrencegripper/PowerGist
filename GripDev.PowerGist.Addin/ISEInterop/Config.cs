@@ -9,7 +9,7 @@ namespace GripDev.PowerGist.Addin.ISEInterop
 {
     public class Config
     {
-        public const string PowerGistFolder = @"C:\Users\lagrippe\Documents\PowerGist\";
+        public static string PowerGistFolder = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "PowerGist");
 
         public static ObjectModelRoot ObjectModelRoot { get; set; }
     }
