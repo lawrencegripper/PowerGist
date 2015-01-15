@@ -110,7 +110,7 @@ namespace GripDev.PowerGist.Addin
                 }
 
                 var CreateNewFile = new ISEInterop.CreateNewFile();
-                var newFile = CreateNewFile.Invoke(AddFileName, CurrentGist.id, string.Empty);
+                var newFile = CreateNewFile.Invoke(AddFileName, CurrentGist.id, "#"+AddFileName);
                 UpdateCurrentGistsFiles();
             });
 
