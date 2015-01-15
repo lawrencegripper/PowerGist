@@ -31,7 +31,9 @@ namespace GripDev.PowerGist.Addin
         {
             InitializeComponent();
 
-            gistClient = new GistClient("*ClientKeyHere*", "*ClientSecretHere*", "powershellISEAddin");
+            GitApiConfig.AlertIfConfigRequired();
+
+            gistClient = new GistClient(GitApiConfig.ClientId, GitApiConfig.ClientSecret, "powershellISEAddin");
             viewModel = new MainViewModel();
             viewModel.Loading = Visibility.Collapsed;
 
