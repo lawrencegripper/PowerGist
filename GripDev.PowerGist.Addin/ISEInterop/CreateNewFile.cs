@@ -28,7 +28,7 @@ namespace GripDev.PowerGist.Addin.ISEInterop
         }
 
 
-        public void Invoke(string name, string id, string content)
+        public ISEFile Invoke(string name, string id, string content)
         {
             var newFile = CreateNewFileInISE();
 
@@ -37,6 +37,7 @@ namespace GripDev.PowerGist.Addin.ISEInterop
 
             FileSaveHelper.SaveFile(name, id, content, newFile);
 
+            return newFile;
         }
     }
 }

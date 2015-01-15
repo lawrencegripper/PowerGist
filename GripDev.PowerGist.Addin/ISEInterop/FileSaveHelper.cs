@@ -61,7 +61,8 @@ namespace GripDev.PowerGist.Addin.ISEInterop
 
         private static bool NoLocalchanges(string content, string filePath)
         {
-            return System.IO.File.ReadAllText(filePath) == content;
+            var existing = System.IO.File.ReadAllText(filePath).Replace("\r\n", "\n");
+            return existing == content;
         }
 
         private static bool OverwriteLocalChanges(string filePath)

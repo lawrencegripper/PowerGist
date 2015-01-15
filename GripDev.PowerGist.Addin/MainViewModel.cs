@@ -58,7 +58,9 @@ namespace GripDev.PowerGist.Addin
                 {
                     var CreateNewFile = new ISEInterop.CreateNewFile();
                     var content = await repo.GetFileContentByUri(file.raw_url);
-                    CreateNewFile.Invoke(file.filename, selectGist.id, content); 
+                    var iseFile = CreateNewFile.Invoke(file.filename, selectGist.id, content); 
+
+                    //var subscribe = new ISEInterop.SubscribeToChanges()
                 }
             });
 
@@ -86,6 +88,8 @@ namespace GripDev.PowerGist.Addin
                         continue;
                     }
                     await repo.Update(CurrentGist, file.filename, contentFromEditor);
+
+                    PendingChangesInCurrentGist = false;
                 }
             });
         }

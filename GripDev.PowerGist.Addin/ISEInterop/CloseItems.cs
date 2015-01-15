@@ -32,7 +32,8 @@ namespace GripDev.PowerGist.Addin.ISEInterop
 
         private void SaveAndCloseFiles()
         {
-            foreach (var f in host.CurrentPowerShellTab.Files)
+            var list = host.CurrentPowerShellTab.Files.ToArray();
+            foreach (var f in list)
             {
                 MessageBox.Show("//Todo - updateGist");
                 f.Save();
