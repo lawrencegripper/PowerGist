@@ -20,12 +20,14 @@ namespace GripDev.PowerGist.Addin.ISEInterop
             }
         }
 
-        public void Invoke(string name, string content)
+        public void Invoke(string name, string id, string content)
         {
-            var newFile = host.CurrentPowerShellTab.Files.Add();
-            host.CurrentPowerShellTab.Files.SelectedFile = newFile;
+            var newFile = CreateNewFileInISE();
+
             newFile.Editor.InsertText(content);
-            var filePath = string.Format("{0}\\{1}", Config.PowerGistFolder, name);
+            newFile.Editor.SetCaretPosition(0, 0);
+
+            var filePath = string.Format("{0}\\{1}\\{2}", Config.PowerGistFolder, name, id);
 
             if (FileNoStoredLocally(filePath))
             {
@@ -45,6 +47,13 @@ namespace GripDev.PowerGist.Addin.ISEInterop
                 return;
             }
 
+        }
+
+        private ISEFile CreateNewFileInISE()
+        {
+            var newFile = host.CurrentPowerShellTab.Files.Add();
+            host.CurrentPowerShellTab.Files.SelectedFile = newFile;
+            return newFile;
         }
 
         private static bool FileNoStoredLocally(string filePath)

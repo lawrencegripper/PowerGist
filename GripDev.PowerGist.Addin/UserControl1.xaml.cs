@@ -57,12 +57,9 @@ namespace GripDev.PowerGist.Addin
             }
         }
 
-        private async void webBrowser_LoadCompleted(object sender, NavigationEventArgs e)
+        private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (e.Uri == null)
-            { return; }
-
-            
+            viewModel.LoadScript.Execute(((ListItem)sender).DataContext);
         }
 
 

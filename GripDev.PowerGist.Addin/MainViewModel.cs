@@ -50,7 +50,7 @@ namespace GripDev.PowerGist.Addin
                 {
                     var CreateNewFile = new ISEInterop.CreateNewFile();
                     var content = await repo.GetFileContentByUri(file.raw_url);
-                    CreateNewFile.Invoke(file.filename, content); 
+                    CreateNewFile.Invoke(file.filename, q.id, content); 
                 }
             });
         }
@@ -119,7 +119,8 @@ namespace GripDev.PowerGist.Addin
             }
             set
             {
-                value = loading; NotifyPropertyChanged();
+                loading = value;
+                NotifyPropertyChanged();
             }
         }
 
