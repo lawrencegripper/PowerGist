@@ -42,12 +42,8 @@
             </StackPanel>
         </StackPanel>
 
-        <StackPanel>
-            <StackPanel Visibility="{Binding CurrentGist, ConverterParameter=Reverse, Converter={StaticResource NullToVisbilityConverter}}">
-                <TextBox x:Name="textBox" Text="Gist Description"/>
-                <TextBox Text="{Binding AddFileName}" />
-                <Button Content="New Gist" Command="{Binding CreateNewGist}" CommandParameter="{Binding Text, ElementName=textBox}"/>
-            </StackPanel>
+        <StackPanel Visibility="{Binding CurrentGist, ConverterParameter=Reverse, Converter={StaticResource NullToVisbilityConverter}}">
+
             <ListBox x:Name="listBox" ItemsSource="{Binding MyGists}" SelectionChanged="listBox_SelectionChanged" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -68,6 +64,11 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+            <StackPanel>
+                <TextBox x:Name="textBox" Text="Gist Description"/>
+                <TextBox Text="{Binding AddFileName}" />
+                <Button Content="New Gist" Command="{Binding CreateNewGist}" CommandParameter="{Binding Text, ElementName=textBox}"/>
+            </StackPanel>
         </StackPanel>
 
         <ProgressBar IsIndeterminate="True" Height="10" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Visibility="{Binding Loading}" VerticalAlignment="Bottom"/>

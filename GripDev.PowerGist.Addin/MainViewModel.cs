@@ -34,19 +34,23 @@ namespace GripDev.PowerGist.Addin
         {
             Loading = Visibility.Visible;
             PendingChangesInCurrentGist = false;
+            SetupCommands();
         }
 
         public async Task Load()
         {
             Loading = Visibility.Visible;
-            var myGistsTemp = await repo.GetUsers();
-            MyGists = new ObservableCollection<GistObject>(myGistsTemp);
+            MyGists = new ObservableCollection<GistObject>(await repo.GetUsers());
 
-            StarredGists = new ObservableCollection<GistObject>(await repo.GetStarred());
+            //StarredGists = new ObservableCollection<GistObject>(await repo.GetStarred());
 
             Loading = Visibility.Collapsed;
 
-            LoadScript = new DelegateCommand<GistObject>(async selectGist =>
+        }
+
+        private void SetupCommands()
+        {
+            LoadGist = new DelegateCommand<GistObject>(async selectGist =>
             {
                 if (CurrentGist != null)
                 {
@@ -56,7 +60,7 @@ namespace GripDev.PowerGist.Addin
 
                 CurrentGist = selectGist;
 
-                foreach(var file in selectGist.files)
+                foreach (var file in selectGist.files)
                 {
                     var createNewFile = new ISEInterop.CreateNewFile();
 
@@ -71,7 +75,7 @@ namespace GripDev.PowerGist.Addin
                     });
             });
 
-            CloseGist = new DelegateCommand(() =>
+            CloseGist = new DelegateCommand(async () =>
             {
                 if (CurrentGist == null)
                 {
@@ -83,6 +87,8 @@ namespace GripDev.PowerGist.Addin
 
                 CurrentGist = null;
                 CurrentGistFiles = null;
+
+                await Load();
             });
 
             SaveGist = new DelegateCommand(async () =>
@@ -90,7 +96,7 @@ namespace GripDev.PowerGist.Addin
                 var saveAll = new ISEInterop.SaveAllItems();
                 saveAll.Invoke();
 
-                foreach(var file in CurrentGist.files)
+                foreach (var file in CurrentGist.files)
                 {
                     var contentFromEditor = new ISEInterop.GetCurrentFileContent().Invoke(file.filename);
                     if (contentFromEditor == null)
@@ -118,7 +124,7 @@ namespace GripDev.PowerGist.Addin
             CreateNewGist = new DelegateCommand<string>(async x =>
             {
                 var gist = await repo.Create(x, AddFileName, "Write-host 'hello'");
-                LoadScript.Execute(gist);
+                LoadGist.Execute(gist);
             });
         }
 
@@ -143,12 +149,12 @@ namespace GripDev.PowerGist.Addin
         }
 
 
-        private ICommand loadScript;
+        private ICommand loadGist;
 
-        public ICommand LoadScript
+        public ICommand LoadGist
         {
-            get { return loadScript; }
-            set { loadScript = value; NotifyPropertyChanged(); }
+            get { return loadGist; }
+            set { loadGist = value; NotifyPropertyChanged(); }
         }
 
         private ICommand closeGist;
@@ -229,13 +235,13 @@ namespace GripDev.PowerGist.Addin
             set { myGists = value; NotifyPropertyChanged();  }
         }
 
-        private ObservableCollection<GistObject> starredGists;
+        //private ObservableCollection<GistObject> starredGists;
 
-        public ObservableCollection<GistObject> StarredGists
-        {
-            get { return starredGists; }
-            set { starredGists = value; NotifyPropertyChanged(); }
-        }
+        //public ObservableCollection<GistObject> StarredGists
+        //{
+        //    get { return starredGists; }
+        //    set { starredGists = value; NotifyPropertyChanged(); }
+        //}
 
         private ObservableCollection<File> currentGistFiles;
 

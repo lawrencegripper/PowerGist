@@ -61,29 +61,7 @@ namespace GripDev.PowerGist.Addin
 
         private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            viewModel.LoadScript.Execute(e.AddedItems[0]);
+            viewModel.LoadGist.Execute(e.AddedItems[0]);
         }
-
-
-
-        //private async Task GetUserGists()
-        //{
-        //    var gists = await gistClient.ListGists(GistClient.ListMode.AuthenticatedUserGist);
-        //    var files = gists.SelectMany(x => x.files.Where(y => y.filename.Contains(".ps1")));
-
-
-        //    foreach (var gFile in files)
-        //    {
-        //        var newFile = HostObject.CurrentPowerShellTab.Files.Add();
-        //        HostObject.CurrentPowerShellTab.Files.SelectedFile = newFile;
-
-        //        var content = await gistClient.DownloadRawText(new Uri(gFile.raw_url));
-
-        //        newFile.Editor.InsertText(content);
-        //    }
-        //}
-
-
-
     }
 }
