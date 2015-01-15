@@ -61,6 +61,33 @@ namespace GripDev.PowerGist.Addin
                     CreateNewFile.Invoke(file.filename, selectGist.id, content); 
                 }
             });
+
+            CloseGist = new DelegateCommand(() =>
+            {
+                if (CurrentGist == null)
+                {
+                    return;
+                }
+
+                var closeItems = new ISEInterop.CloseItems();
+                closeItems.Invoke();
+            });
+
+            SaveGist = new DelegateCommand(async () =>
+            {
+                var saveAll = new ISEInterop.SaveAllItems();
+                saveAll.Invoke();
+
+                foreach(var file in CurrentGist.files)
+                {
+                    var contentFromEditor = new ISEInterop.GetCurrentFileContent().Invoke(file.filename);
+                    if (contentFromEditor == null)
+                    {
+                        continue;
+                    }
+                    await repo.Update(CurrentGist, file.filename, contentFromEditor);
+                }
+            });
         }
 
         private ICommand loadScript;
@@ -71,6 +98,24 @@ namespace GripDev.PowerGist.Addin
             set { loadScript = value; NotifyPropertyChanged(); }
         }
 
+        private ICommand closeGist;
+
+        public ICommand CloseGist
+        {
+            get { return closeGist; }
+            set { closeGist = value; NotifyPropertyChanged(); }
+        }
+
+        private ICommand saveGist;
+
+        public ICommand SaveGist
+        {
+            get { return saveGist; }
+            set { saveGist = value; NotifyPropertyChanged(); }
+        }
+
+
+
         private GistObject currentGist;
 
         public GistObject CurrentGist
@@ -79,10 +124,23 @@ namespace GripDev.PowerGist.Addin
             set {
                 currentGist = value;
                 NotifyPropertyChanged();
+                if (value == null)
+                {
+                    PendingChangesInCurrentGist = false;
+                }
                 //update possible files
                 CurrentGistFiles = new ObservableCollection<File>(currentGist.files);
             }
         }
+
+        private bool pendingChangesInCurrentGist;
+
+        public bool PendingChangesInCurrentGist
+        {
+            get { return pendingChangesInCurrentGist; }
+            set { pendingChangesInCurrentGist = value; NotifyPropertyChanged(); }
+        }
+
 
         private File currentFile;
 

@@ -29,8 +29,8 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             
-            <Button Content="Update Gist from Local changes" />
-            <Button Content="Close Gist" />
+            <Button Content="Save Changes to Gist" Command="{Binding SaveGist}" />
+            <Button Content="Close Gist" Command="{Binding CloseGist}"  />
             
         </StackPanel>
            

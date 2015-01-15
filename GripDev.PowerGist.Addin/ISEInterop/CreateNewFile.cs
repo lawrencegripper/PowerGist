@@ -20,45 +20,6 @@ namespace GripDev.PowerGist.Addin.ISEInterop
             }
         }
 
-        public void Invoke(string name, string id, string content)
-        {
-            var newFile = CreateNewFileInISE();
-
-            newFile.Editor.InsertText(content);
-            newFile.Editor.SetCaretPosition(1, 1);
-
-            var directoryPath = string.Format("{0}\\{1}\\{2}", Config.PowerGistFolder, id, name);
-            var filePath = System.IO.Path.Combine(directoryPath, name);
-
-            if (FileNoStoredLocally(filePath))
-            {
-                CreateDirIfNeeded(directoryPath);
-                SaveFileLocally(newFile, filePath);
-                return;
-            }
-
-            if (NoLocalchanges(content, filePath))
-            {
-                SaveFileLocally(newFile, filePath);
-                return;
-            }
-
-            if (OverwriteLocalChanges(filePath))
-            {
-                SaveFileLocally(newFile, filePath);
-                return;
-            }
-
-        }
-
-        private static void CreateDirIfNeeded(string directoryPath)
-        {
-            if (!System.IO.Directory.Exists(directoryPath))
-            {
-                System.IO.Directory.CreateDirectory(directoryPath);
-            }
-        }
-
         private ISEFile CreateNewFileInISE()
         {
             var newFile = host.CurrentPowerShellTab.Files.Add();
@@ -66,24 +27,16 @@ namespace GripDev.PowerGist.Addin.ISEInterop
             return newFile;
         }
 
-        private static bool FileNoStoredLocally(string filePath)
-        {
-            return !System.IO.File.Exists(filePath);
-        }
 
-        private static bool NoLocalchanges(string content, string filePath)
+        public void Invoke(string name, string id, string content)
         {
-            return System.IO.File.ReadAllText(filePath) == content;
-        }
+            var newFile = CreateNewFileInISE();
 
-        private static bool OverwriteLocalChanges(string filePath)
-        {
-            return MessageBox.Show("File already exists with changes locally, do you want to overwrite? (if not I'll leave it unsaved) Path: " + filePath, "Overwrite?", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
-        }
+            newFile.Editor.InsertText(content);
+            newFile.Editor.SetCaretPosition(1, 1);
 
-        private static void SaveFileLocally(ISEFile newFile, string filePath)
-        {
-            newFile.SaveAs(filePath);
+            FileSaveHelper.SaveFile(name, id, content, newFile);
+
         }
     }
 }

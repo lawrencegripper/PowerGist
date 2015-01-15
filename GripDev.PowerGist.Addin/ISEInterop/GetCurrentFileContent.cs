@@ -7,16 +7,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GripDev.PowerGist.Addin.ISEIntrop
+namespace GripDev.PowerGist.Addin.ISEInterop
 {
-    //private ObjectModelRoot host;
-    //class GetCurrentFileContent
-    //{
-    //    host = Config.ObjectModelRoot;
-    //}
+    class GetCurrentFileContent
+    {
+        private ObjectModelRoot host;
+        public GetCurrentFileContent()
+        {
+            host = Config.ObjectModelRoot;
 
-    //public File Invoke()
-    //{
+        }
 
-    //}
+        public string Invoke(string filename)
+        {
+            var fileFromEditor = host.CurrentPowerShellTab.Files
+                .Where(x => x.DisplayName == filename)
+                .FirstOrDefault();
+
+            if (fileFromEditor == null)
+            {
+                return null;
+            }
+
+            return fileFromEditor.Editor.Text;
+        }
+    }
+
+    
 }

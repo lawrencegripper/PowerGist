@@ -69,7 +69,9 @@
     <Compile Include="ISEInterop\CloseItems.cs" />
     <Compile Include="ISEInterop\CreateNewFile.cs" />
     <Compile Include="ISEInterop\Config.cs" />
+    <Compile Include="ISEInterop\FileSaveHelper.cs" />
     <Compile Include="ISEInterop\GetCurrentFileContent.cs" />
+    <Compile Include="ISEInterop\SaveAllItems.cs" />
     <Compile Include="ISEInterop\SubscribeToChanges.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="netfx\System\Guard.cs" />
