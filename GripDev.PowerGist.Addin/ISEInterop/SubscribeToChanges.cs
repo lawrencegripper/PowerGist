@@ -12,7 +12,7 @@ namespace GripDev.PowerGist.Addin.ISEInterop
         private ObjectModelRoot host;
         private Action callbackAction;
         private string propertyNameFilter;
-        public SubscribeToChanges(Action Callback, ISEFile file, string propertyName)
+        public SubscribeToChanges(string filePath, Action Callback)
         {
             host = Config.ObjectModelRoot;
             if (host == null)
@@ -21,16 +21,14 @@ namespace GripDev.PowerGist.Addin.ISEInterop
             }
 
             callbackAction = Callback;
-            propertyNameFilter = propertyName;
-            file.Editor.PropertyChanged += Editor_PropertyChanged;
+            System.IO.FileSystemWatcher watcher = new System.IO.FileSystemWatcher(filePath);
+            watcher.Changed += Watcher_Changed;
+            watcher.EnableRaisingEvents = true;
         }
 
-        private void Editor_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void Watcher_Changed(object sender, System.IO.FileSystemEventArgs e)
         {
-            if (e.PropertyName == propertyNameFilter)
-            {
-                callbackAction.Invoke();
-            }
+            callbackAction.Invoke();
         }
     }
 }

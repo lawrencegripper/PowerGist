@@ -10,40 +10,31 @@ namespace GripDev.PowerGist.Addin.ISEInterop
 {
     class FileSaveHelper
     {
-        public static void SaveFile(string name, string id, string content, ISEFile newFile)
+        public static string SaveFile(string directoryPath, string name, string id, string content, ISEFile newFile)
         {
-            string directoryPath = GetDirPath(name, id);
-            string filePath = GetFilePath(name, directoryPath);
+            string filePath = System.IO.Path.Combine(directoryPath, name);
 
             if (FileNoStoredLocally(filePath))
             {
                 CreateDirIfNeeded(directoryPath);
-                SaveFileLocally(newFile, filePath);
-                return;
+                return SaveFileLocally(newFile, filePath);
             }
 
-            if (NoLocalchanges(content, filePath))
+            if (NoLocalchanges(content, filePath) || OverwriteLocalChanges(filePath))
             {
-                SaveFileLocally(newFile, filePath);
-                return;
+                return SaveFileLocally(newFile, filePath);
             }
 
-            if (OverwriteLocalChanges(filePath))
-            {
-                SaveFileLocally(newFile, filePath);
-                return;
-            }
+            return null;
+            //if (OverwriteLocalChanges(filePath))
+            //{
+            //    return SaveFileLocally(newFile, filePath);
+            //}
         }
 
-        private static string GetFilePath(string name, string directoryPath)
-        {
-            return System.IO.Path.Combine(directoryPath, name);
-        }
 
-        private static string GetDirPath(string name, string id)
-        {
-            return string.Format("{0}\\{1}\\{2}", Config.PowerGistFolder, id, name);
-        }
+
+
 
         private static void CreateDirIfNeeded(string directoryPath)
         {
@@ -70,9 +61,10 @@ namespace GripDev.PowerGist.Addin.ISEInterop
             return MessageBox.Show("File already exists with changes locally, do you want to overwrite? (if not I'll leave it unsaved) Path: " + filePath, "Overwrite?", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
         }
 
-        private static void SaveFileLocally(ISEFile newFile, string filePath)
+        private static string SaveFileLocally(ISEFile newFile, string filePath)
         {
             newFile.SaveAs(filePath);
+            return filePath;
         }
     }
 }

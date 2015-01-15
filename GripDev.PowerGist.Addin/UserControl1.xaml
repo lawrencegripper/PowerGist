@@ -9,6 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="400">
     <UserControl.Resources>
+        <Converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <Converters:NullToVisbilityConverter x:Key="NullToVisbilityConverter"/>
     </UserControl.Resources>
     <UserControl.DataContext>
@@ -28,6 +29,13 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+            
+            <StackPanel Orientation="Horizontal" Margin="0,10">
+                 <TextBox Text="{Binding AddFileName}"/>
+                 <Button Content="Add File" Command="{Binding AddFileToCurrentGist}"/>
+            </StackPanel>
+
+            <TextBlock Text="!Pending Local Changes!" Margin="0,10" Visibility="{Binding PendingChangesInCurrentGist, Converter={StaticResource BoolToVisibilityConverter}}" Foreground="#FFFD0000" FontSize="16" />
             
             <Button Content="Save Changes to Gist" Command="{Binding SaveGist}" />
             <Button Content="Close Gist" Command="{Binding CloseGist}"  />

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -32,6 +33,7 @@ namespace GripDev.PowerGist.Addin
         public MainViewModel()
         {
             Loading = Visibility.Visible;
+            PendingChangesInCurrentGist = false;
         }
 
         public async Task Load()
@@ -56,12 +58,17 @@ namespace GripDev.PowerGist.Addin
 
                 foreach(var file in selectGist.files)
                 {
-                    var CreateNewFile = new ISEInterop.CreateNewFile();
-                    var content = await repo.GetFileContentByUri(file.raw_url);
-                    var iseFile = CreateNewFile.Invoke(file.filename, selectGist.id, content); 
+                    var createNewFile = new ISEInterop.CreateNewFile();
 
-                    //var subscribe = new ISEInterop.SubscribeToChanges()
+                    var content = await repo.GetFileContentByUri(file.raw_url);
+                    var iseFile = createNewFile.Invoke(file.filename, selectGist.id, content);
                 }
+
+                var subscribeForChanges = new ISEInterop
+                    .SubscribeToChanges(ISEInterop.CreateNewFile.GetDirPath(selectGist.id), () =>
+                    {
+                        PendingChangesInCurrentGist = true;
+                    });
             });
 
             CloseGist = new DelegateCommand(() =>
@@ -73,6 +80,9 @@ namespace GripDev.PowerGist.Addin
 
                 var closeItems = new ISEInterop.CloseItems();
                 closeItems.Invoke();
+
+                CurrentGist = null;
+                CurrentGistFiles = null;
             });
 
             SaveGist = new DelegateCommand(async () =>
@@ -92,6 +102,30 @@ namespace GripDev.PowerGist.Addin
                     PendingChangesInCurrentGist = false;
                 }
             });
+
+            AddFileToCurrentGist = new DelegateCommand(() =>
+            {
+                if (String.IsNullOrEmpty(AddFileName))
+                {
+                    Debug.WriteLine("No file name specified.");
+                }
+
+                var CreateNewFile = new ISEInterop.CreateNewFile();
+                var newFile = CreateNewFile.Invoke(AddFileName, CurrentGist.id, string.Empty);
+                UpdateCurrentGistsFiles();
+            });
+        }
+
+        private void UpdateCurrentGistsFiles()
+        {
+            //update the gui
+            CurrentGistFiles.Add(new File() { filename = AddFileName });
+
+            //update the current gist, need to create new list as its immutable
+            var currentFiles = new List<File>(CurrentGist.files);
+            var updatedFiles = new Files(currentFiles);
+            updatedFiles.Add(new File() { filename = AddFileName });
+            CurrentGist.files = updatedFiles;
         }
 
         private ICommand loadScript;
@@ -118,6 +152,22 @@ namespace GripDev.PowerGist.Addin
             set { saveGist = value; NotifyPropertyChanged(); }
         }
 
+
+        private ICommand addFileToCurrentGist;
+
+        public ICommand AddFileToCurrentGist
+        {
+            get { return addFileToCurrentGist; }
+            set { addFileToCurrentGist = value; NotifyPropertyChanged(); }
+        }
+
+        private string addFileName;
+
+        public string AddFileName
+        {
+            get { return addFileName; }
+            set { addFileName = value; NotifyPropertyChanged(); }
+        }
 
 
         private GistObject currentGist;

@@ -64,6 +64,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\NullToVisbilityConverter.cs" />
     <Compile Include="GistRepository.cs" />
     <Compile Include="ISEInterop\CloseItems.cs" />

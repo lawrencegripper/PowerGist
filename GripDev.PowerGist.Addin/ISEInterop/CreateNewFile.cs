@@ -20,12 +20,8 @@ namespace GripDev.PowerGist.Addin.ISEInterop
             }
         }
 
-        private ISEFile CreateNewFileInISE()
-        {
-            var newFile = host.CurrentPowerShellTab.Files.Add();
-            host.CurrentPowerShellTab.Files.SelectedFile = newFile;
-            return newFile;
-        }
+        public string FilePath { get; private set; }
+        public string DirPath { get; private set; }
 
 
         public ISEFile Invoke(string name, string id, string content)
@@ -35,8 +31,27 @@ namespace GripDev.PowerGist.Addin.ISEInterop
             newFile.Editor.InsertText(content);
             newFile.Editor.SetCaretPosition(1, 1);
 
-            FileSaveHelper.SaveFile(name, id, content, newFile);
+            DirPath = GetDirPath(id);
 
+            FilePath = FileSaveHelper.SaveFile(DirPath, name, id, content, newFile);
+
+            return newFile;
+        }
+
+        public static string GetDirPath(string id)
+        {
+            return System.IO.Path.Combine(Config.PowerGistFolder, id);
+        }
+
+        private string GetFilePath(string name, string directoryPath)
+        {
+            return System.IO.Path.Combine(directoryPath, name);
+        }
+
+        private ISEFile CreateNewFileInISE()
+        {
+            var newFile = host.CurrentPowerShellTab.Files.Add();
+            host.CurrentPowerShellTab.Files.SelectedFile = newFile;
             return newFile;
         }
     }
