@@ -18,8 +18,22 @@ $line1 = "Add-Type -Path '$pshome\GripDev.PowerGist.Addin.dll'“
 $line2 = "Add-Type -Path '$pshome\GistsApi.dll'“
 $line3 = "`$psISE.CurrentPowerShellTab.VerticalAddOnTools.Add('PowerGist', [GripDev.PowerGist.Addin.PowerGistPanel], `$true) "
 
-Add-Content $iseProfile $line1 -Force
-Add-Content $iseProfile $line2 -Force
-Add-Content $iseProfile $line3 -Force
+$profile = Get-Content $iseProfile
+
+if (-not $profile)
+{
+	Add-Content $iseProfile $line1 -Force
+	Add-Content $iseProfile $line2 -Force
+	Add-Content $iseProfile $line3 -Force
+}
+else
+{
+	Write-Host "*****************************************************"
+	Write-Host "ISE Profile configuration already setup, manuall add the following to: " + $iseProfile
+	Write-Host $line1
+	Write-host $line2
+	Write-host $line3
+	Write-Host "*****************************************************"
+}
 
 Write-ChocolateySuccess $packageName
