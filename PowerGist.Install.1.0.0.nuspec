@@ -5,7 +5,7 @@
         <version>1.0.0</version>
         <authors>Lawrence Gripper</authors>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>My package description.</description>
+        <description>PowerGist is a quick project to create a nice addin for the Powershell ISE to Edit, Run and Update Gists.</description>
     </metadata>
     <files>
         <file src="GripDev.PowerGist.Addin\bin\Release\GistsApi.dll" target="lib\GistsApi.dll" />
