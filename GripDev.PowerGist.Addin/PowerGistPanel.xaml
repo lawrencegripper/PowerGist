@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GripDev.PowerGist.Addin"
              xmlns:Converters="clr-namespace:GripDev.PowerGist.Addin.Converters" x:Name="userControl" x:Class="GripDev.PowerGist.Addin.PowerGistPanel"
-             Background="#FFF2F2F2"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="400">
     <UserControl.Resources>
@@ -16,6 +15,7 @@
         <local:MainViewModel />
     </UserControl.DataContext>
     <Grid x:Name="grid" Width="400">
+        <ProgressBar IsIndeterminate="True" Height="10" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Visibility="{Binding Loading}" VerticalAlignment="Top"/>
         <StackPanel Visibility="{Binding CurrentGist, Converter={StaticResource NullToVisbilityConverter}}">
             <TextBlock Text="Current Gist:" FontFamily="Segoe UI Light" Margin="0,10"/>
             <TextBlock Text="{Binding CurrentGist.description}" FontSize="18.667" FontFamily="Segoe UI Light" TextTrimming="CharacterEllipsis" />
@@ -30,8 +30,8 @@
             </ListBox>
 
             <StackPanel Orientation="Horizontal">
-                <TextBox Text="{Binding AddFileName}" Width="200"/>
-                <Button Content="Add File" Command="{Binding AddFileToCurrentGist}"/>
+                <TextBox Text="{Binding AddFileName}" Width="200" FontFamily="Segoe UI Light" FontSize="16" Height="30"/>
+                <Button Content="Add File" Command="{Binding AddFileToCurrentGist}" FontFamily="Segoe UI Light" FontSize="16" Height="30"/>
             </StackPanel>
 
             <TextBlock Text="!Pending Local Changes!" Margin="0,10" Visibility="{Binding PendingChangesInCurrentGist, Converter={StaticResource BoolToVisibilityConverter}}" Foreground="#FFFD0000" FontSize="16" />
@@ -43,35 +43,33 @@
         </StackPanel>
 
         <StackPanel Visibility="{Binding CurrentGist, ConverterParameter=Reverse, Converter={StaticResource NullToVisbilityConverter}}">
-
-            <ListBox x:Name="listBox" ItemsSource="{Binding MyGists}" SelectionChanged="listBox_SelectionChanged" >
+            <StackPanel Margin="8">
+                <TextBox x:Name="textBox" Text="Gist Description" FontFamily="Segoe UI Light" FontSize="16" Height="30"/>
+                <TextBox Text="{Binding AddFileName}" FontFamily="Segoe UI Light"  FontSize="16"  Height="30" />
+                <Button Content="Creat New Gist" FontFamily="Segoe UI Light"  Height="30" FontSize="16" Command="{Binding CreateNewGist}" CommandParameter="{Binding Text, ElementName=textBox}"/>
+            </StackPanel>
+            <Line Margin="10" Fill="Gray" StrokeThickness="5"/>
+            <ListBox x:Name="listBox" ItemsSource="{Binding MyGists}" SelectionChanged="listBox_SelectionChanged" BorderBrush="{x:Null}" Background="Gray" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Background="#FFF2F2F2">
-                            <StackPanel Margin="10,0,0,0">
-                                <TextBlock Width="300" Text="{Binding description}" FontSize="18.667" FontFamily="Segoe UI Light" TextTrimming="CharacterEllipsis"/>
-                                <ListBox ItemsSource="{Binding files}" IsEnabled="False">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel>
-                                                <TextBlock Text="{Binding filename}" FontFamily="Segoe UI Light"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="{Binding description}" Width="300" FontSize="18.667" FontFamily="Segoe UI Light" TextTrimming="CharacterEllipsis"/>
+                            <ListBox ItemsSource="{Binding files}" IsEnabled="False">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding filename}" FontFamily="Segoe UI Light"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <StackPanel>
-                <TextBox x:Name="textBox" Text="Gist Description"/>
-                <TextBox Text="{Binding AddFileName}" />
-                <Button Content="New Gist" Command="{Binding CreateNewGist}" CommandParameter="{Binding Text, ElementName=textBox}"/>
-            </StackPanel>
+
         </StackPanel>
 
-        <ProgressBar IsIndeterminate="True" Height="10" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Visibility="{Binding Loading}" VerticalAlignment="Bottom"/>
 
         <WebBrowser Visibility="Collapsed" x:Name="webBrowser" Navigating="webBrowser_Navigating" />
     </Grid>

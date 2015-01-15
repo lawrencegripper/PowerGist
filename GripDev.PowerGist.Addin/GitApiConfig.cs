@@ -9,22 +9,15 @@ namespace GripDev.PowerGist.Addin
 {
     class GitApiConfig
     {
-        private const string unconfiguredConstant = "ReplaceMe";
-        static GitApiConfig()
-        {
+        public static string ClientId = "1eb530bea98d9f863c57";
+        public static string ClientSecret = "1bd1d3ae6d18c42339e4f98f7e705ef63de7bfdc";
 
-        }
-
-        public static void AlertIfConfigRequired()
+        internal static void AlertIfConfigRequired()
         {
-            if (ClientId == unconfiguredConstant)
+            if (ClientSecret == null)
             {
-                MessageBox.Show("ClientID and Secret require configuration, see GitApiConfig class");
+                MessageBox.Show("Configure Client Secret");
             }
         }
-
-        public static string ClientId = unconfiguredConstant;
-        public static string ClientSecret = unconfiguredConstant;
-
     }
 }
