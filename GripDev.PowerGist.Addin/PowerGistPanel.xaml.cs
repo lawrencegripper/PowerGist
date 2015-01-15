@@ -61,6 +61,11 @@ namespace GripDev.PowerGist.Addin
 
         private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (e.AddedItems == null || e.AddedItems.Count < 1)
+            {
+                return;
+            }
+
             viewModel.LoadGist.Execute(e.AddedItems[0]);
         }
     }
