@@ -59,7 +59,7 @@ namespace GripDev.PowerGist.Addin
 
         private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            viewModel.LoadScript.Execute(((ListItem)sender).DataContext);
+            viewModel.LoadScript.Execute(e.AddedItems[0]);
         }
 
 

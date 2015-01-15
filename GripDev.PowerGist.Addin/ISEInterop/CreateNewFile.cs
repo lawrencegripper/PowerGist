@@ -25,12 +25,14 @@ namespace GripDev.PowerGist.Addin.ISEInterop
             var newFile = CreateNewFileInISE();
 
             newFile.Editor.InsertText(content);
-            newFile.Editor.SetCaretPosition(0, 0);
+            newFile.Editor.SetCaretPosition(1, 1);
 
-            var filePath = string.Format("{0}\\{1}\\{2}", Config.PowerGistFolder, name, id);
+            var directoryPath = string.Format("{0}\\{1}\\{2}", Config.PowerGistFolder, id, name);
+            var filePath = System.IO.Path.Combine(directoryPath, name);
 
             if (FileNoStoredLocally(filePath))
             {
+                CreateDirIfNeeded(directoryPath);
                 SaveFileLocally(newFile, filePath);
                 return;
             }
@@ -47,6 +49,14 @@ namespace GripDev.PowerGist.Addin.ISEInterop
                 return;
             }
 
+        }
+
+        private static void CreateDirIfNeeded(string directoryPath)
+        {
+            if (!System.IO.Directory.Exists(directoryPath))
+            {
+                System.IO.Directory.CreateDirectory(directoryPath);
+            }
         }
 
         private ISEFile CreateNewFileInISE()

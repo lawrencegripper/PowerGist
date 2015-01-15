@@ -44,13 +44,21 @@ namespace GripDev.PowerGist.Addin
 
             Loading = Visibility.Collapsed;
 
-            LoadScript = new DelegateCommand<GistObject>(async q =>
+            LoadScript = new DelegateCommand<GistObject>(async selectGist =>
             {
-                foreach(var file in q.files)
+                if (CurrentGist != null)
+                {
+                    var closeItems = new ISEInterop.CloseItems();
+                    closeItems.Invoke();
+                }
+
+                CurrentGist = selectGist;
+
+                foreach(var file in selectGist.files)
                 {
                     var CreateNewFile = new ISEInterop.CreateNewFile();
                     var content = await repo.GetFileContentByUri(file.raw_url);
-                    CreateNewFile.Invoke(file.filename, q.id, content); 
+                    CreateNewFile.Invoke(file.filename, selectGist.id, content); 
                 }
             });
         }
