@@ -60,7 +60,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="UserControl1.xaml">
+    <Page Include="PowerGistPanel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -77,8 +77,8 @@
     <Compile Include="MainViewModel.cs" />
     <Compile Include="netfx\System\Guard.cs" />
     <Compile Include="netfx\System\Windows\Input\DelegateCommand.cs" />
-    <Compile Include="UserControl1.xaml.cs">
-      <DependentUpon>UserControl1.xaml</DependentUpon>
+    <Compile Include="PowerGistPanel.xaml.cs">
+      <DependentUpon>PowerGistPanel.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

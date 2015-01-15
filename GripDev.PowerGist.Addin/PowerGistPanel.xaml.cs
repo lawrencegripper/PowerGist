@@ -21,17 +21,19 @@ namespace GripDev.PowerGist.Addin
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class UserControl1 : IAddOnToolHostObject
+    public partial class PowerGistPanel : IAddOnToolHostObject
     {
         private GistClient gistClient;
         private MainViewModel viewModel;
         public ObjectModelRoot HostObject { get; set; }
 
-        public UserControl1()
+        public PowerGistPanel()
         {
             InitializeComponent();
 
             gistClient = new GistClient("1eb530bea98d9f863c57", "1e55daaec72d64581f8688e7bbb3e779c83b3262", "powershellISEAddin");
+            viewModel = new MainViewModel();
+            viewModel.Loading = Visibility.Collapsed;
 
             //navigate to "https://github.com/login/oauth/authorize" 
             webBrowser.Visibility = Visibility.Visible;

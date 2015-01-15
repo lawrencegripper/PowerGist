@@ -19,7 +19,7 @@ namespace GripDev.PowerGist.Addin
         public MainViewModel(GistRepository repo)
         {
             this.repo = repo;
-
+            AddFileName = "newFile.ps1";
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         }
 
@@ -114,6 +114,12 @@ namespace GripDev.PowerGist.Addin
                 var newFile = CreateNewFile.Invoke(AddFileName, CurrentGist.id, string.Empty);
                 UpdateCurrentGistsFiles();
             });
+
+            CreateNewGist = new DelegateCommand<string>(async x =>
+            {
+                var gist = await repo.Create(x, AddFileName, "Write-host 'hello'");
+                LoadScript.Execute(gist);
+            });
         }
 
         private void UpdateCurrentGistsFiles()
@@ -127,6 +133,15 @@ namespace GripDev.PowerGist.Addin
             updatedFiles.Add(new File() { filename = AddFileName });
             CurrentGist.files = updatedFiles;
         }
+
+        private ICommand createNewGist;
+
+        public ICommand CreateNewGist
+        {
+            get { return createNewGist; }
+            set { createNewGist = value; NotifyPropertyChanged(); }
+        }
+
 
         private ICommand loadScript;
 
@@ -181,6 +196,7 @@ namespace GripDev.PowerGist.Addin
                 if (value == null)
                 {
                     PendingChangesInCurrentGist = false;
+                    return;
                 }
                 //update possible files
                 CurrentGistFiles = new ObservableCollection<File>(currentGist.files);

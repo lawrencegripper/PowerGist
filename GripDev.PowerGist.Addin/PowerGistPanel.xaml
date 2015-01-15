@@ -1,0 +1,77 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GripDev.PowerGist.Addin"
+             xmlns:Converters="clr-namespace:GripDev.PowerGist.Addin.Converters" x:Name="userControl" x:Class="GripDev.PowerGist.Addin.PowerGistPanel"
+             Background="#FFF2F2F2"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="400">
+    <UserControl.Resources>
+        <Converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <Converters:NullToVisbilityConverter x:Key="NullToVisbilityConverter"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <local:MainViewModel />
+    </UserControl.DataContext>
+    <Grid x:Name="grid" Width="400">
+        <StackPanel Visibility="{Binding CurrentGist, Converter={StaticResource NullToVisbilityConverter}}">
+            <TextBlock Text="Current Gist:" FontFamily="Segoe UI Light" Margin="0,10"/>
+            <TextBlock Text="{Binding CurrentGist.description}" FontSize="18.667" FontFamily="Segoe UI Light" TextTrimming="CharacterEllipsis" />
+
+            <TextBlock Text="Included Files:" FontFamily="Segoe UI Light" Margin="0,10"/>
+            <ListBox ItemsSource="{Binding CurrentGistFiles}" IsEnabled="False">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding filename}" FontFamily="Segoe UI Light"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBox Text="{Binding AddFileName}" Width="200"/>
+                <Button Content="Add File" Command="{Binding AddFileToCurrentGist}"/>
+            </StackPanel>
+
+            <TextBlock Text="!Pending Local Changes!" Margin="0,10" Visibility="{Binding PendingChangesInCurrentGist, Converter={StaticResource BoolToVisibilityConverter}}" Foreground="#FFFD0000" FontSize="16" />
+
+            <StackPanel>
+                <Button Content="Save Changes to Gist" Command="{Binding SaveGist}" />
+                <Button Content="Close Gist" Command="{Binding CloseGist}"  />
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel>
+            <StackPanel Visibility="{Binding CurrentGist, ConverterParameter=Reverse, Converter={StaticResource NullToVisbilityConverter}}">
+                <TextBox x:Name="textBox" Text="Gist Description"/>
+                <TextBox Text="{Binding AddFileName}" />
+                <Button Content="New Gist" Command="{Binding CreateNewGist}" CommandParameter="{Binding Text, ElementName=textBox}"/>
+            </StackPanel>
+            <ListBox x:Name="listBox" ItemsSource="{Binding MyGists}" SelectionChanged="listBox_SelectionChanged" >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Background="#FFF2F2F2">
+                            <StackPanel Margin="10,0,0,0">
+                                <TextBlock Width="300" Text="{Binding description}" FontSize="18.667" FontFamily="Segoe UI Light" TextTrimming="CharacterEllipsis"/>
+                                <ListBox ItemsSource="{Binding files}" IsEnabled="False">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding filename}" FontFamily="Segoe UI Light"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+
+        <ProgressBar IsIndeterminate="True" Height="10" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Visibility="{Binding Loading}" VerticalAlignment="Bottom"/>
+
+        <WebBrowser Visibility="Collapsed" x:Name="webBrowser" Navigating="webBrowser_Navigating" />
+    </Grid>
+</UserControl>
