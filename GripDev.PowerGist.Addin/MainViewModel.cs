@@ -20,7 +20,6 @@ namespace GripDev.PowerGist.Addin
         {
             this.repo = repo;
             AddFileName = "newFile.ps1";
-            //AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         }
  
         public MainViewModel()

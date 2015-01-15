@@ -31,6 +31,9 @@ namespace GripDev.PowerGist.Addin
         {
             InitializeComponent();
 
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+
             GitApiConfig.AlertIfConfigRequired();
 
             gistClient = new GistClient(GitApiConfig.ClientId, GitApiConfig.ClientSecret, "powershellISEAddin");
@@ -40,6 +43,12 @@ namespace GripDev.PowerGist.Addin
             //navigate to "https://github.com/login/oauth/authorize" 
             webBrowser.Visibility = Visibility.Visible;
             webBrowser.Navigate(gistClient.AuthorizeUrl);
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show("Error Occured in PowerGist:" + e.ToString());
+            
         }
 
         private async void webBrowser_Navigating(object sender, NavigatingCancelEventArgs e)

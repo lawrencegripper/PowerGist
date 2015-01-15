@@ -35,7 +35,6 @@ namespace GripDev.PowerGist.Addin.ISEInterop
             var list = host.CurrentPowerShellTab.Files.ToArray();
             foreach (var f in list)
             {
-                MessageBox.Show("//Todo - updateGist");
                 f.Save();
                 host.CurrentPowerShellTab.Files.Remove(f);
             }
