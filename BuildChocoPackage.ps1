@@ -1,0 +1,1 @@
+﻿.\packages\NuGet.CommandLine.2.8.3\tools\nuget.exe pack .\PowerGist.Install.1.0.0.nuspec

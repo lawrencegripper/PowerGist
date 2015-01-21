@@ -16,7 +16,7 @@ Copy-Item $depDll $pshome -Force
 
 $line1 = "Add-Type -Path '$pshome\GripDev.PowerGist.Addin.dll'"
 $line2 = "Add-Type -Path '$pshome\GistsApi.dll'"
-$line3 = "`$psISE.CurrentPowerShellTab.VerticalAddOnTools.Add('PowerGist', [GripDev.PowerGist.Addin.PowerGistPanel], `$true) "
+$line3 = "`$psISE.CurrentPowerShellTab.VerticalAddOnTools.Add('PowerGist', [GripDev.PowerGist.Addin.PowerGistPanel], `$true)"
 
 $profile = Get-Content $iseProfile
 
