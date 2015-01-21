@@ -1,7 +1,6 @@
-$packageName = 'powergist'
+﻿$packageName = 'powergist'
 
 $path = Split-Path -Parent $MyInvocation.MyCommand.Definition
-
 
 $pathLib = "$path\..\lib\"
 
@@ -29,7 +28,7 @@ if (-not $profile)
 else
 {
 	Write-Debug "*****************************************************"
-	Write-Debug "ISE Profile configuration already setup, manuall add the following to: " + $iseProfile
+	Write-Debug "ISE Profile configuration already setup, manually add the following to: " + $iseProfile
 	Write-Debug $line1
 	Write-Debug $line2
 	Write-Debug $line3
