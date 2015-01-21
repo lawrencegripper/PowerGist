@@ -4,7 +4,13 @@ $path = Split-Path -Parent $MyInvocation.MyCommand.Definition
 
 $pathLib = "$path\..\lib\"
 
-Write-Debug $pathLib
+$iseInstances = get-process | ?{$_.ProcessName -like "powershell_ise"}
+
+if ($iseInstances.Length -gt 0)
+{
+    Write-Host "ISE Running, recomend stopping before install"
+}
+
 
 $addinDll = "$pathLib\GripDev.PowerGist.Addin.dll"
 $depDll = "$pathLib\GistsApi.dll"
@@ -17,22 +23,24 @@ $line1 = "Add-Type -Path '$pshome\GripDev.PowerGist.Addin.dll'"
 $line2 = "Add-Type -Path '$pshome\GistsApi.dll'"
 $line3 = "`$psISE.CurrentPowerShellTab.VerticalAddOnTools.Add('PowerGist', [GripDev.PowerGist.Addin.PowerGistPanel], `$true)"
 
-$profile = Get-Content $iseProfile
+$containsText = Select-String -Path $iseProfile -Pattern "PowerGist" `
+                | Select-Object -First 1 -ExpandProperty Matches `
+                | Select-Object -ExpandProperty Success
 
-if (-not $profile)
+if ($containsText)
+{
+	Write-Host "*****************************************************"
+	Write-Host "ISE Profile configuration already setup, manually check the following is present in: " + $iseProfile
+	Write-Host $line1
+	Write-Host $line2
+	Write-Host $line3
+	Write-Host "*****************************************************"
+}
+else
 {
 	Add-Content $iseProfile $line1 -Force
 	Add-Content $iseProfile $line2 -Force
 	Add-Content $iseProfile $line3 -Force
-}
-else
-{
-	Write-Debug "*****************************************************"
-	Write-Debug "ISE Profile configuration already setup, manually add the following to: " + $iseProfile
-	Write-Debug $line1
-	Write-Debug $line2
-	Write-Debug $line3
-	Write-Debug "*****************************************************"
 }
 
 Write-ChocolateySuccess $packageName
