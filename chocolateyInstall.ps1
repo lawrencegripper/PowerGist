@@ -1,4 +1,4 @@
-$packageName = 'PowerGist.Install'
+$packageName = 'powergist'
 
 $path = Split-Path -Parent $MyInvocation.MyCommand.Definition
 
