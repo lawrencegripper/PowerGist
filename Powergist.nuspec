@@ -4,6 +4,8 @@
         <id>powergist</id>
         <version>1.0.0</version>
         <authors>Lawrence Gripper</authors>
+        <licenseUrl>https://github.com/lawrencegripper/PowerGist/blob/master/LICENSE.MD</licenseUrl>
+        <projectUrl>https://github.com/lawrencegripper/PowerGist</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>PowerGist is a quick project to create a nice addin for the Powershell ISE to Edit, Run and Update Gists.</description>
     </metadata>
