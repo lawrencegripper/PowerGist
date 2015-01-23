@@ -23,9 +23,19 @@ $line1 = "Add-Type -Path '$pshome\GripDev.PowerGist.Addin.dll'"
 $line2 = "Add-Type -Path '$pshome\GistsApi.dll'"
 $line3 = "`$psISE.CurrentPowerShellTab.VerticalAddOnTools.Add('PowerGist', [GripDev.PowerGist.Addin.PowerGistPanel], `$true)"
 
-$containsText = Select-String -Path $iseProfile -Pattern "PowerGist" `
-                | Select-Object -First 1 -ExpandProperty Matches `
-                | Select-Object -ExpandProperty Success
+$iseProfileExists = Test-Path $iseProfile
+
+if ($iseProfileExists)
+{
+	$containsText = Select-String -Path $iseProfile -Pattern "PowerGist" `
+					| Select-Object -First 1 -ExpandProperty Matches `
+					| Select-Object -ExpandProperty Success
+}
+else
+{
+	New-Item $iseProfile -type file
+	$containsTest = $false
+}
 
 if ($containsText)
 {
