@@ -3,6 +3,7 @@
     <metadata>
         <id>powergist</id>
         <version>1.0.0</version>
+        <title>PowerGist</title>
         <authors>Lawrence Gripper</authors>
         <licenseUrl>https://github.com/lawrencegripper/PowerGist/blob/master/LICENSE.MD</licenseUrl>
         <projectUrl>https://github.com/lawrencegripper/PowerGist</projectUrl>
