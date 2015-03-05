@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22512.0
+VisualStudioVersion = 14.0.22609.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GripDev.PowerGist.Addin", "GripDev.PowerGist.Addin\GripDev.PowerGist.Addin.csproj", "{1862DEE2-ECEC-431C-8163-617103207DA5}"
 EndProject
@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		LICENSE.MD = LICENSE.MD
 		Powergist.nuspec = Powergist.nuspec
 		PowerGistInstallerDebug.ps1 = PowerGistInstallerDebug.ps1
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FA736741-E975-4F3E-82E8-EF39F92EB001}"
