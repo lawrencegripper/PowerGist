@@ -54,10 +54,10 @@ namespace GripDev.PowerGist.Addin
 
                 foreach (var file in selectGist.files)
                 {
+					var content = await repo.GetFileContentByUri(file.raw_url);
                     var createNewFile = new ISEInterop.CreateNewFile();
 
-                    var content = await repo.GetFileContentByUri(file.raw_url);
-                    var iseFile = createNewFile.Invoke(file.filename, selectGist.id, content);
+					var iseFile = createNewFile.Invoke(file.filename, selectGist.id, content);
                 }
 
                 var subscribeForChanges = new ISEInterop

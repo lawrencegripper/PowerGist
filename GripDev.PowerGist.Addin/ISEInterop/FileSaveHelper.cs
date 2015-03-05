@@ -14,23 +14,18 @@ namespace GripDev.PowerGist.Addin.ISEInterop
         {
             string filePath = System.IO.Path.Combine(directoryPath, name);
 
-            if (FileNoStoredLocally(filePath))
+            if (FileNotStoredLocally(filePath))
             {
                 CreateDirIfNeeded(directoryPath);
-                return SaveFileLocally(newFile, filePath);
             }
 
-            if (NoLocalchanges(content, filePath) || OverwriteLocalChanges(filePath))
-            {
-                return SaveFileLocally(newFile, filePath);
-            }
+			if (HasLocalchanges(content, filePath) && !OverwriteLocalChanges(filePath))
+			{
+				return filePath;
+			}
 
-            return null;
-            //if (OverwriteLocalChanges(filePath))
-            //{
-            //    return SaveFileLocally(newFile, filePath);
-            //}
-        }
+			return SaveFileLocally(newFile, filePath);
+		}
 
 
 
@@ -45,20 +40,20 @@ namespace GripDev.PowerGist.Addin.ISEInterop
         }
 
 
-        private static bool FileNoStoredLocally(string filePath)
+        private static bool FileNotStoredLocally(string filePath)
         {
             return !System.IO.File.Exists(filePath);
         }
 
-        private static bool NoLocalchanges(string content, string filePath)
+        private static bool HasLocalchanges(string content, string filePath)
         {
             var existing = System.IO.File.ReadAllText(filePath).Replace("\r\n", "\n");
-            return existing == content;
+            return !(existing == content);
         }
 
         private static bool OverwriteLocalChanges(string filePath)
         {
-            return MessageBox.Show("File already exists with changes locally, do you want to overwrite? (if not I'll leave it unsaved) Path: " + filePath, "Overwrite?", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+            return MessageBox.Show("File already exists with changes locally, do you want to overwrite? (if not I'll load the local file) Path: " + filePath, "Overwrite?", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
         }
 
         private static string SaveFileLocally(ISEFile newFile, string filePath)

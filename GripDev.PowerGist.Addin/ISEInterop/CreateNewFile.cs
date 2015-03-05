@@ -1,6 +1,7 @@
 ﻿using Microsoft.PowerShell.Host.ISE;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,16 +27,29 @@ namespace GripDev.PowerGist.Addin.ISEInterop
 
         public ISEFile Invoke(string name, string id, string content)
         {
-            var newFile = CreateNewFileInISE();
+			DirPath = GetDirPath(id);
+			var expectedFilePath = Path.Combine(DirPath, name);
 
-            newFile.Editor.InsertText(content);
-            newFile.Editor.SetCaretPosition(1, 1);
+			ISEFile iseFile = null;
+			if (File.Exists(expectedFilePath))
+			{
+				FilePath = expectedFilePath;
+				iseFile = OpenExistingFileInISE();
+			}
+			else
+			{
+				iseFile = CreateNewFileInISE();
+			}
 
-            DirPath = GetDirPath(id);
+			//if (FileSaveHelper.NoLocalchanges(content, expectedFilePath) || FileSaveHelper.OverwriteLocalChanges(expectedFilePath))
+			//{
+				
+			//}
 
-            FilePath = FileSaveHelper.SaveFile(DirPath, name, id, content, newFile);
 
-            return newFile;
+            FilePath = FileSaveHelper.SaveFile(DirPath, name, id, content, iseFile);
+
+            return iseFile;
         }
 
         public static string GetDirPath(string id)
@@ -50,9 +64,16 @@ namespace GripDev.PowerGist.Addin.ISEInterop
 
         private ISEFile CreateNewFileInISE()
         {
-            var newFile = host.CurrentPowerShellTab.Files.Add();
+			var newFile = host.CurrentPowerShellTab.Files.Add();
             host.CurrentPowerShellTab.Files.SelectedFile = newFile;
             return newFile;
         }
-    }
+
+		private ISEFile OpenExistingFileInISE()
+		{
+			var newFile = host.CurrentPowerShellTab.Files.Add(FilePath);
+			host.CurrentPowerShellTab.Files.SelectedFile = newFile;
+			return newFile;
+		}
+	}
 }

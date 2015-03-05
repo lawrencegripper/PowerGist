@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GripDev.PowerGist.Addin.ISEInterop
 {
@@ -21,10 +22,17 @@ namespace GripDev.PowerGist.Addin.ISEInterop
 
         public void Invoke()
         {
-            foreach (var f in host.CurrentPowerShellTab.Files)
+			if (host.CurrentPowerShellTab.Files.Any(x => !x.IsSaved))
+            {
+				MessageBox.Show("You have unsaved files open, these will be ignored");
+			}
+
+            foreach (var f in host.CurrentPowerShellTab.Files.Where(x=>x.IsSaved))
             {
                 f.Save();
             }
+
+
         }
     }
 }
