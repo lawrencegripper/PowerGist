@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>powergist</id>
-        <version>1.0.0</version>
+        <version>1.0.2</version>
         <title>PowerGist</title>
         <authors>Lawrence Gripper</authors>
         <licenseUrl>https://github.com/lawrencegripper/PowerGist/blob/master/LICENSE.MD</licenseUrl>
