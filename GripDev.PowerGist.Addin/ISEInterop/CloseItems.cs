@@ -35,8 +35,16 @@ namespace GripDev.PowerGist.Addin.ISEInterop
             var list = host.CurrentPowerShellTab.Files.ToArray();
             foreach (var f in list)
             {
-                f.Save();
-                host.CurrentPowerShellTab.Files.Remove(f);
+				try
+				{
+					f.Save();
+					host.CurrentPowerShellTab.Files.Remove(f);
+				}
+				catch (Exception ex)
+				{
+					//Temp hack when attempting to save files that aren't saved. 
+					MessageBox.Show("Error when saving file: " + ex.ToString());
+				}
             }
         }
 

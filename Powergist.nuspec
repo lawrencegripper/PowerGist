@@ -9,6 +9,7 @@
         <projectUrl>https://github.com/lawrencegripper/PowerGist</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>PowerGist is a quick project to create a nice addin for the Powershell ISE to Edit, Run and Update Gists.</description>
+		<tags>Powershell Github Gist Source</tags>
     </metadata>
     <files>
         <file src="GripDev.PowerGist.Addin\bin\Release\GistsApi.dll" target="lib\GistsApi.dll" />
