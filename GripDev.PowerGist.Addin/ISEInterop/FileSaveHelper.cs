@@ -14,16 +14,18 @@ namespace GripDev.PowerGist.Addin.ISEInterop
         {
             string filePath = System.IO.Path.Combine(directoryPath, name);
 
-            if (FileNotStoredLocally(filePath))
+			if (FileNotStoredLocally(filePath))
             {
+				//create the directory if needed
                 CreateDirIfNeeded(directoryPath);
             }
-
-			if (HasLocalchanges(content, filePath) && !OverwriteLocalChanges(filePath))
+			else if (HasLocalchanges(content, filePath) && !OverwriteLocalChanges(filePath))
 			{
+				//No override wanted so we'll just return the file
 				return filePath;
 			}
 
+			//Save the file locally and return the path
 			return SaveFileLocally(newFile, filePath);
 		}
 

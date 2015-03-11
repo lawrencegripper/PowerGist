@@ -39,15 +39,17 @@ namespace GripDev.PowerGist.Addin.ISEInterop
 			else
 			{
 				iseFile = CreateNewFileInISE();
+				iseFile.Editor.InsertText(content);
+				iseFile.Editor.SetCaretPosition(1, 1);
 			}
 
 			//if (FileSaveHelper.NoLocalchanges(content, expectedFilePath) || FileSaveHelper.OverwriteLocalChanges(expectedFilePath))
 			//{
-				
+
 			//}
 
 
-            FilePath = FileSaveHelper.SaveFile(DirPath, name, id, content, iseFile);
+			FilePath = FileSaveHelper.SaveFile(DirPath, name, id, content, iseFile);
 
             return iseFile;
         }
