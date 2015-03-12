@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.Windows.Input;
+using System.Windows;
 
 /// <summary>
 /// Generic <see cref="ICommand"/> implementation that receives delegates/lambdas 
@@ -136,7 +137,14 @@ public class DelegateCommand<T> : ICommand
     {
         if (this.CanExecute(parameter))
         {
-            this.execute((T)parameter);
+			try
+			{
+				this.execute((T)parameter);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Error Occured: " + ex.ToString());
+			}
         }
     }
 }

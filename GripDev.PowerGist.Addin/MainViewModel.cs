@@ -118,6 +118,11 @@ namespace GripDev.PowerGist.Addin
                 var gist = await repo.Create(x, AddFileName, "Write-host 'hello'");
                 LoadGist.Execute(gist);
             });
+
+			OpenGistInBrowser = new DelegateCommand(() =>
+			{
+				System.Diagnostics.Process.Start(CurrentGist.html_url);
+			});
         }
 
         private void UpdateCurrentGistsFiles()
@@ -165,8 +170,17 @@ namespace GripDev.PowerGist.Addin
             set { saveGist = value; NotifyPropertyChanged(); }
         }
 
+		private ICommand openGistInBrowser;
 
-        private ICommand addFileToCurrentGist;
+		public ICommand OpenGistInBrowser
+		{
+			get { return openGistInBrowser; }
+			set { openGistInBrowser = value; NotifyPropertyChanged();  }
+		}
+
+
+
+		private ICommand addFileToCurrentGist;
 
         public ICommand AddFileToCurrentGist
         {
@@ -226,14 +240,6 @@ namespace GripDev.PowerGist.Addin
             get { return myGists; }
             set { myGists = value; NotifyPropertyChanged();  }
         }
-
-        //private ObservableCollection<GistObject> starredGists;
-
-        //public ObservableCollection<GistObject> StarredGists
-        //{
-        //    get { return starredGists; }
-        //    set { starredGists = value; NotifyPropertyChanged(); }
-        //}
 
         private ObservableCollection<File> currentGistFiles;
 

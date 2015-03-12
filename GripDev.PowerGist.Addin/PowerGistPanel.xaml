@@ -40,6 +40,7 @@
 
             <StackPanel>
                 <Button Content="Save Changes to Gist" Command="{Binding SaveGist}" FontFamily="Segoe UI Light" FontSize="16" Height="30"/>
+                <Button Content="Open in Browser" Command="{Binding OpenGistInBrowser}"  FontFamily="Segoe UI Light" FontSize="16" Height="30"/>
                 <Button Content="Close Gist" Command="{Binding CloseGist}"  FontFamily="Segoe UI Light" FontSize="16" Height="30"/>
             </StackPanel>
         </StackPanel>
