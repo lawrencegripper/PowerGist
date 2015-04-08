@@ -1,5 +1,7 @@
 # PowerGist
 
+(https://ci.appveyor.com/api/projects/status/github/lawrencegripper/PowerGist)
+
 An addin for the Powershell ISE to allow quick access, update and creation of Gists
 
 #Install 
