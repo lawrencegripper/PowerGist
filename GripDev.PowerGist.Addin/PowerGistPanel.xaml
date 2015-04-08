@@ -54,7 +54,7 @@
             <StackPanel Margin="6,18,6,6" Grid.Row="0">
                 <TextBox x:Name="textBox" Text="Gist Description" FontFamily="Segoe UI Light" FontSize="16" Height="30"/>
                 <TextBox Text="{Binding AddFileName}" FontFamily="Segoe UI Light"  FontSize="16"  Height="30" />
-                <Button Content="Creat New Gist" FontFamily="Segoe UI Light"  Height="30" FontSize="16" Command="{Binding CreateNewGist}" CommandParameter="{Binding Text, ElementName=textBox}"/>
+                <Button Content="Create New Gist" FontFamily="Segoe UI Light"  Height="30" FontSize="16" Command="{Binding CreateNewGist}" CommandParameter="{Binding Text, ElementName=textBox}"/>
             </StackPanel>
             <TextBlock Text="Current Gists" FontFamily="Segoe UI Semibold" FontSize="24" Grid.Row="1" Margin="6,0,0,0"/>
             <ListBox Grid.Row="2" x:Name="listBox" ItemsSource="{Binding MyGists}" SelectionChanged="listBox_SelectionChanged" BorderBrush="{x:Null}">
